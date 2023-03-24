@@ -19,6 +19,10 @@
 		enable-gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
 		regulator-boot-on;
 	};
+
+	chosen {
+        zephyr,console = &cdc_acm_uart0;
+    };
 };
 
 &i2c1 {
@@ -48,4 +52,11 @@ dmic_dev: &pdm0 {
 	pinctrl-1 = <&pdm0_sleep>;
 	pinctrl-names = "default", "sleep";
 	clock-source = "PCLK32M_HFXO";
+};
+
+&zephyr_udc0 {
+     cdc_acm_uart0: cdc_acm_uart0 {
+             compatible = "zephyr,cdc-acm-uart";
+             label = "CDC_ACM_0";
+     };
 };
