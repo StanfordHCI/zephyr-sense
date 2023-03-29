@@ -1,0 +1,80 @@
+
+/ {
+    zephyr,user {
+        regulator-gpios =   <&gpiod 10 GPIO_ACTIVE_HIGH>,
+                            <&gpioe 10 GPIO_ACTIVE_HIGH>,
+                            <&gpiod 4 GPIO_ACTIVE_HIGH>,
+                            <&gpiod 5 GPIO_ACTIVE_HIGH>,
+                            <&gpiod 6 GPIO_ACTIVE_HIGH>,
+                            <&gpiod 7 GPIO_ACTIVE_HIGH>,
+                            <&gpiod 11 GPIO_ACTIVE_HIGH>,
+                            <&gpioc 0 GPIO_ACTIVE_HIGH>;
+
+        afe-gpios =    <&gpioe 11 GPIO_PULL_DOWN>,
+                       <&gpioe 12 GPIO_PULL_DOWN>,
+                       <&gpioe 13 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>,
+                       <&gpiob 2 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+
+        imu-gpios =   <&gpiob 5 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>,
+                      <&gpioc 13 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>,
+                      <&gpiob 12 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+
+    };
+};
+
+&i2c2 {
+    status = "okay";
+    clock-frequency = <I2C_BITRATE_STANDARD>;
+    pinctrl-0 = <&i2c2_scl_pb10 &i2c2_sda_pb11>;
+    pinctrl-names = "default";
+    max20360regulator: max20360regulator@28 {
+        compatible = "maxim,max20360";
+        reg = <0x28>;
+        gpios = <&gpiod 11 GPIO_ACTIVE_HIGH>;
+    };
+    max20360haptic: max20360haptic@50 {
+        compatible = "maxim,max20360";
+        reg = <0x50>;
+    };
+    max20360battery: max20360battery@36 {
+        compatible = "maxim,max20360";
+        reg = <0x6c>;
+    };
+};
+
+&gpioe {
+	status = "okay";
+};
+
+&spi4 {
+    status = "okay";
+    pinctrl-0 = <&spi4_sck_pe2 &spi4_miso_pe5 &spi4_mosi_pe6>;
+    pinctrl-names = "default";
+    cs-gpios = <&gpioe 3 GPIO_ACTIVE_LOW>,
+               <&gpioe 7 GPIO_ACTIVE_LOW>,
+               <&gpioe 8 GPIO_ACTIVE_LOW>,
+               <&gpioe 1 GPIO_ACTIVE_LOW>;
+    adpd4100afe: adpd4100@0 {
+        compatible = "adi,adpd4100";
+        reg = <0>;
+        spi-max-frequency = <10000000>;
+        label = "adpd4100afe";
+    };
+};
+
+&spi2 {
+    status = "okay";
+    pinctrl-0 = <&spi2_sck_pd3 &spi2_miso_pc2_c &spi2_mosi_pc1>;
+    pinctrl-names = "default";
+    cs-gpios = <&gpiob 14 GPIO_ACTIVE_LOW>,
+               <&gpiob 13 GPIO_ACTIVE_LOW>,
+               <&gpioe 15 GPIO_ACTIVE_LOW>,
+               <&gpiob 15 GPIO_ACTIVE_LOW>;
+    lsm6dsl@0 {
+        compatible = "st,lsm6dsl";
+        reg = <0>;
+        spi-max-frequency = <10000000>;
+        label = "lsm6dsl";
+        irq-gpios = <&gpiob 4 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+    };
+};

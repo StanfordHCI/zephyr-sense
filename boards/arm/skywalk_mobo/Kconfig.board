@@ -1,0 +1,8 @@
+# STM32H743ZI Nucleo board configuration
+
+# Copyright (c) 2020 Teslabs Engineering S.L.
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_SKYWALK_MOBO
+	bool "Skywalk Motherboard"
+	depends on SOC_STM32H743XX
