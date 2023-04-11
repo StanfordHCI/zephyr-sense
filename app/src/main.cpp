@@ -99,6 +99,7 @@ int main() {
 
     struct sensor_value accel_x, accel_y, accel_z;
     struct sensor_value gyro_x, gyro_y, gyro_z;
+    struct sensor_value magn_x, magn_y, magn_z;
     char out_str[128];
 
     while (true) {
@@ -121,7 +122,19 @@ int main() {
                 (double)out_ev(&gyro_y),
                 (double)out_ev(&gyro_z));
         printk("%s\n", out_str);
-        k_sleep(K_MSEC(10));
+
+        sensor_sample_fetch_chan(accel_dev, SENSOR_CHAN_MAGN_XYZ);
+        sensor_channel_get(accel_dev, SENSOR_CHAN_MAGN_X, &magn_x);
+        sensor_channel_get(accel_dev, SENSOR_CHAN_MAGN_Y, &magn_y);
+        sensor_channel_get(accel_dev, SENSOR_CHAN_MAGN_Z, &magn_z);
+        sprintf(out_str, "magn x:%f gauss y:%f gauss z:%f gauss",
+                out_ev(&magn_x),
+                out_ev(&magn_y),
+                out_ev(&magn_z));
+        printk("%s\n", out_str);
+
+
+        k_sleep(K_MSEC(100));
     }
 
 }

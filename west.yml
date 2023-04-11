@@ -8,9 +8,11 @@ manifest:
   remotes:
     - name: zephyrproject-rtos
       url-base: https://github.com/zephyrproject-rtos
+    - name: skywalk
+      url-base: https://github.com/skywalk-software
 
   projects:
     - name: zephyr
-      remote: zephyrproject-rtos
-      revision: main
+      remote: skywalk
+      revision: feature/lsm6dsl_lis3mdl
       import: true
