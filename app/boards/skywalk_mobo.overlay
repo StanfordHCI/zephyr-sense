@@ -20,6 +20,10 @@
                       <&gpiob 12 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
 
     };
+
+    chosen {
+        zephyr,console = &cdc_acm_uart0;
+    };
 };
 
 &i2c2 {
@@ -40,6 +44,13 @@
         compatible = "maxim,max20360";
         reg = <0x6c>;
     };
+};
+
+&zephyr_udc0 {
+	cdc_acm_uart0: cdc_acm_uart0 {
+                 compatible = "zephyr,cdc-acm-uart";
+                 label = "CDC_ACM_0";
+         };
 };
 
 &gpioe {

@@ -13,6 +13,8 @@
 #include <zephyr/device.h>
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/drivers/sensor.h>
+#include <zephyr/usb/usb_device.h>
+#include <zephyr/drivers/uart.h>
 
 #include "pmic_interface.h"
 
@@ -64,6 +66,20 @@ int main() {
     /* Init Power Management Subsystem */
     power_init();
     printk("Power Init successful.\r\n");
+
+    const struct device *const dev = DEVICE_DT_GET(DT_CHOSEN(zephyr_console));
+    uint32_t dtr = 0;
+
+    if (usb_enable(NULL)) {
+	return 0 ;
+    }
+
+    /* Poll if the DTR flag was set */
+    while (!dtr) {
+	uart_line_ctrl_get(dev, UART_LINE_CTRL_DTR, &dtr);
+	/* Give CPU resources to low priority threads. */
+	k_sleep(K_MSEC(100));
+    }
 
     const struct device *const accel_dev = DEVICE_DT_GET_ONE(st_lsm6dsl);
 
