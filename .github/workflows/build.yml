@@ -12,21 +12,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          path: example-application
+          path: zephyr-sense
 
       - name: Initialize
-        working-directory: example-application
+        working-directory: zephyr-sense
         run: |
           west init -l .
           west update
 
       - name: Build firmware
-        working-directory: example-application
+        working-directory: zephyr-sense
         run: |
           west build -b skywalk_mobo app
 
       - name: Twister Tests
-        working-directory: example-application
+        working-directory: zephyr-sense
         run: |
           ../zephyr/scripts/twister -G --board-root boards/ --testsuite-root ./tests/
 
